@@ -1,0 +1,17 @@
+﻿<div>
+    <form asp-action="login" method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" placeholder="Mikkel" class="form-control" id="username" name="username"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" placeholder="12345678" class="form-control" id="password" name="password"/>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Go!</button>
+        </div>
+        <h4>@ViewBag.Message</h4>
+        <a href="/Login/Register">Create user</a>
+    </form>
+</div>

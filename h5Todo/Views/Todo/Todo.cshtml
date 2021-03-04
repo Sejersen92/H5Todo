@@ -1,0 +1,77 @@
+﻿@using h5Todo.Controllers
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using h5Todo.Models
+@model h5Todo.Models.Todo
+@{
+    ViewData["Title"] = "Todos page";
+}
+
+@if (HttpContextAccessor.HttpContext.Session.GetInt32("UserId") != null)
+{
+    @if (ViewBag.UpdateText != null)
+    {
+        @ViewBag.UpdateText
+    }
+    <div>
+        @if (ViewBag.todos != null)
+        {
+            @*think about putting this into a HTML.PartialAsync view with a model*@
+            <p>See all of your Todos below:</p>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Date added</th>
+                        <th scope="col">Is it done?</th>
+                        <th scope="col">Delete this todo?</th>
+                        <th scope="col">Edit this todo?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var todo in ViewBag.todos)
+                    {
+                        <tr>
+                            <td><input type="text" placeholder="@todo.Title" /></td>
+                            <td><input type="text" placeholder="@todo.Description" /></td>
+                            <td>@todo.DateAdded</td>
+                            <td>@todo.IsDone</td>
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteTodo", "Todo",
+                                    new { todo.TodoId }, new { @class = "button button-primary" })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "EditTodo", "Todo",
+                                    new { todo.TodoId }, new { @class = "button button-primary" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <h2>Create your todos here:</h2>
+        <form asp-action="Todo">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsDone" class="control-label"></label>
+                <input type="checkbox" asp-for="IsDone" class="form-control" value="true"/>
+                <span asp-validation-for="IsDone" class="text-danger"></span>
+            </div>
+            <h3>@ViewBag.Message</h3>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+}
